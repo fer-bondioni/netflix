@@ -68,6 +68,30 @@
   </div>
 
   <div class="body" style="margin-top: 30rem">
-    <app-slider title="Trending"></app-slider>
+    <app-slider
+      title="Trending"
+      [movies]="trending"
+      [sliderConfig]="sliderConfig"
+    ></app-slider>
+    <app-slider
+      title="Top Rated"
+      [movies]="topRated"
+      [sliderConfig]="sliderConfig"
+    ></app-slider>
+    <app-slider
+      title="Now Playing"
+      [movies]="nowPlaying"
+      [sliderConfig]="sliderConfig"
+    ></app-slider>
+    <app-slider
+      title="Originals"
+      [movies]="originals"
+      [sliderConfig]="sliderConfig"
+    ></app-slider>
+    <app-slider
+      title="Popular"
+      [movies]="popular"
+      [sliderConfig]="sliderConfig"
+    ></app-slider>
   </div>
 </div>
