@@ -4,6 +4,7 @@ import {
   OnInit,
   ViewChild,
   OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Movies } from './models/movies';
@@ -24,19 +25,26 @@ export class AppComponent implements OnInit, OnDestroy {
   nowPlaying: Movies;
 
   sliderConfig = {
-    slidesToShow: 9,
-    slidesToScroll: 2,
+    slidesToShow: 6,
+    slidesToScroll: 1,
     arrows: true,
-    autoplay: false,
+    autoplay: true,
+    autoplaySpeed: 2000,
   };
 
   @ViewChild('stickyHeader') header: ElementRef;
+  headerBGUrl: string;
 
   constructor(private movie: MovieService) {}
 
   ngOnInit(): void {
     this.subs.push(
-      this.movie.getTrending().subscribe((data) => (this.trending = data))
+      this.movie.getTrending().subscribe((data) => {
+        this.trending = data;
+        this.headerBGUrl =
+          'https://image.tmdb.org/t/p/original' +
+          this.trending.results[0].backdrop_path;
+      })
     );
     this.subs.push(
       this.movie.getPopular().subscribe((data) => (this.popular = data))
@@ -53,5 +61,14 @@ export class AppComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.subs.map((s) => s.unsubscribe());
+  }
+  @HostListener('window:scroll', ['$event'])
+  handleScroll() {
+    const windowScroll = window.pageYOffset;
+    if (windowScroll > this.header.nativeElement.offsetHeight) {
+      this.sticky = true;
+    } else {
+      this.sticky = false;
+    }
   }
 }
